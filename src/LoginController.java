@@ -49,41 +49,45 @@ public class LoginController {
 
     public void attemptLogin() throws Exception {
         // Create Variables
-        String username=textFieldUsername.getText();
-        String claimedPassword=textFieldPassword.getText();
-        String id=null,fname=null,lname=null,truePassword=null;
-        Boolean employee=false;
 
-        // Acquire user data
-        String query = "select * from student.student_information where id = '"+username+"';";
+        // Check to ensure that textfields have data.
+        if(textFieldUsername.getText().isEmpty()){ textFieldUsername.setText("Username Required"); }
+        else if (textFieldPassword.getText().isEmpty()) { textFieldPassword.setText("Password Required"); }
+        else {
 
-        CachedRowSet accountData = sqlCommands.readDataBase(2,query);
+            String username = textFieldUsername.getText();
+            String claimedPassword = textFieldPassword.getText();
+            String id = null, fname = null, lname = null, truePassword = null;
+            Boolean employee = false;
 
-        // Determine if user info was in CachedRow
-        if(!accountData.isBeforeFirst()) {
-            labelMessage.setTextFill(Color.RED);
-            labelMessage.setText("Invalid Username");
-        }
-        else
-        {
-            // Acquire the account's password and than compare to the given password
-            while(accountData.next()){
-                id=accountData.getString("id");
-                fname=accountData.getString("first_name");
-                lname=accountData.getString("last_name");
-                truePassword = accountData.getString("password");
-            }
-            if (claimedPassword.equals(truePassword)){
-                setUser(id,fname,lname,employee);
-                menuController.openMainScreen();
-                closeLogin();
-            }
-            else{
+            // Acquire user data
+            String query = "select * from student.student_information where id = '" + username + "';";
+
+            CachedRowSet accountData = sqlCommands.readDataBase(1, query);
+
+            // Determine if user info was in CachedRow
+            if (!accountData.isBeforeFirst()) {
                 labelMessage.setTextFill(Color.RED);
-                labelMessage.setText("Invalid Password");
+                labelMessage.setText("Invalid Username");
+            } else {
+                // Acquire the account's password and than compare to the given password
+                while (accountData.next()) {
+                    id = accountData.getString("id");
+                    fname = accountData.getString("first_name");
+                    lname = accountData.getString("last_name");
+                    truePassword = accountData.getString("password");
+                }
+                if (claimedPassword.equals(truePassword)) {
+                    setUser(id, fname, lname, employee);
+                    menuController.openMainScreen();
+                    closeLogin();
+                } else {
+                    labelMessage.setTextFill(Color.RED);
+                    labelMessage.setText("Invalid Password");
+                }
             }
-        }
-    }
+        }// Ends else
+    }// Ends attemptLogin
 
     public void attemptloginTest() throws Exception {
         menuController.openMainScreen();
