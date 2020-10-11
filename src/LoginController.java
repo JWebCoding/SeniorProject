@@ -54,7 +54,7 @@ public class LoginController {
         // Acquire user data
         String query = "select * from student.student_information where id = '"+username+"';";
 
-        CachedRowSet accountData = sqlCommands.readStudentDatabase(query);
+        CachedRowSet accountData = sqlCommands.readDataBase(2,query);
 
         // Determine if user info was in CachedRow
         if(!accountData.isBeforeFirst()) {

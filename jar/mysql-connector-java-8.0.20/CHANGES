@@ -408,7 +408,7 @@ Version 8.0.8
 
   - Fix for Bug#85885 (25874048), resultSetConcurrency and resultSetType are swapped in call to prepareStatement.
 
-  - Fix for Bug#74932 (20066806), ConnectionImp Doesn't Close Server Prepared Statement (PreparedStatement Leak).
+  - Fix for Bug#74932 (20066806), ConnectionImp Doesn't Close Server Prepared Statement (Query Leak).
 
   - WL#10536, Deprecating COM_SHUTDOWN.
 
@@ -635,7 +635,7 @@ Version 6.0.6
 
   - Deprecate the EOF packet.
 
-  - Fix for Bug#75956, Inserting timestamps using a server PreparedStatement and useLegacyDatetimeCode=false
+  - Fix for Bug#75956, Inserting timestamps using a server Query and useLegacyDatetimeCode=false
 
   - Fix for Bug#22385172, CONNECTOR/J MANIFEST DOES NOT EXPOSE FABRIC (OSGi).
 
@@ -758,7 +758,7 @@ Version 6.0.6
 
   - Add test for already fixed Bug#72546 (18719760), C/J Fabric createGroup() throws ClassCastException
 
-  - Fix for Bug#77217 (21184949), ClassCastException when executing a streaming PreparedStatement with Fabric
+  - Fix for Bug#77217 (21184949), ClassCastException when executing a streaming Query with Fabric
 
   - Merged version 5.1.35.
 
@@ -911,7 +911,7 @@ Version 6.0.6
   - Fix for Bug#72008 (18389973), Avoid useless object creation in StringUtils#getBytes-methods.
     Thanks to Andrej Golovnin for his contribution.
 
-  - Fix for Bug#72006 (18403199), Avoid creation of a character array in PreparedStatement$ParseInfo.
+  - Fix for Bug#72006 (18403199), Avoid creation of a character array in Query$ParseInfo.
     Thanks to Andrej Golovnin for his contribution.
     Additionally, unneeded StringBuffer replaced by StringBuilder instances in StringUtils.
 
@@ -1045,7 +1045,7 @@ Version 6.0.6
     Procedures metadata so that consulting I__S and MySQL/DDL returns the same info.
 
   - Fix for Bug#69308 (16879267), Avoid calling batchedStatement.close() twice, and thus raising and ignoring an undercover SQLException, in methods
-    PreparedStatement.executeBatchedInserts and PreparedStatement.executePreparedBatchAsMultiStatement.
+    Query.executeBatchedInserts and Query.executePreparedBatchAsMultiStatement.
 
   - Fix for Bug#68400, useCompression=true and library.test.MySQL_TEST to server, zip native method cause out of memory.
     CompressedInputStream now does not keep reference to connection.
@@ -1193,7 +1193,7 @@ Version 6.0.6
 09-06-12 - Version 5.1.22
   - Fix for Bug#57662, Incorrect Query Duration When useNanosForElapsedTime Enabled.
 
-  - Fix for Bug#65503, ResultSets created by PreparedStatement.getGeneratedKeys() are not close()d.
+  - Fix for Bug#65503, ResultSets created by Query.getGeneratedKeys() are not close()d.
 
   - Fix for Bug#63800, getVersionColumns() does not return timestamp fields; always empty.
     Added support of ON UPDATE CURRENT_TIMESTAMP for TIMESTAMP and DATETIME fields.
@@ -1254,7 +1254,7 @@ Version 6.0.6
 05-02-12 - Version 5.1.20
   - Fix for Bug#64983, 5.1.19 not working with JBoss AS 4.2.3.GA.
 
-  - Fix for Bug#13960556, java.lang.StringIndexOutOfBoundsException in com.mysql.jdbc.PreparedStatement.formatNanos(int nanos).
+  - Fix for Bug#13960556, java.lang.StringIndexOutOfBoundsException in com.mysql.jdbc.Query.formatNanos(int nanos).
 
   - Fix for pluggable authentication tests to run on Windows.
 
@@ -1312,7 +1312,7 @@ Version 6.0.6
     
   - Connection.changeUser() would not check for closed connections, leading to NPEs when this method was called on a closed connection.
 	
-  - Fix for Bug#63284, memory leak with Failover proxied Statement/PreparedStatement with DBCP due to improper implementation of equals().
+  - Fix for Bug#63284, memory leak with Failover proxied Statement/Query with DBCP due to improper implementation of equals().
     
   - Prepared statements would needlessly allocate a 4K buffer for converting
     streams when no set*Stream() methods had been used.
@@ -1679,7 +1679,7 @@ Version 6.0.6
 	
     - Fixed Bug#50538 - ${svn.revno} shows up in DBMD.getDriverVersion().
     
-    - Removed usage of timestamp nanoseconds in PreparedStatement.setTimestamp(),
+    - Removed usage of timestamp nanoseconds in Query.setTimestamp(),
       as long as Bug#50774 exists in the server and there's no real support
       for nanos/micros in TIMESTAMPs, avoid the performance regression usage of 
       them causes.
@@ -1816,7 +1816,7 @@ Version 6.0.6
     - Fixed BUG#43070 - traceProtocol parameter isn't configured early enough to
       capture handshake protocol.
 
-    - Fixed BUG#41161 - PreparedStatement.addBatch() doesn't check for all parameters
+    - Fixed BUG#41161 - Query.addBatch() doesn't check for all parameters
       being set, which leads to a NullPointerException when calling executeBatch() and
       rewriting batched statements into multi-value or multi-statement statements.
 
@@ -1894,7 +1894,7 @@ Version 6.0.6
     - Fixed Bug #41484 Accessing fields by name after the ResultSet is closed throws
       NullPointerException.
 
-    - Fixed Bug #39426 - executeBatch passes most recent PreparedStatement params
+    - Fixed Bug #39426 - executeBatch passes most recent Query params
       to StatementInterceptor
       
     - Support use of INFORMATION_SCHEMA.PARAMETERS when "useInformationSchema" is set "true" and the view exists
@@ -2262,7 +2262,7 @@ Version 6.0.6
       allow usernames and database names in any character set to
       be used in the JDBC URL.
 
-    - Errors encountered during Statement/PreparedStatement/CallableStatement.executeBatch()
+    - Errors encountered during Statement/Query/CallableStatement.executeBatch()
       when "rewriteBatchStatements" has been set to "true" now return
       BatchUpdateExceptions according to the setting of "continueBatchOnError".
       
@@ -2483,7 +2483,7 @@ nn-nn-07 - Version 5.0.9
     - XAConnections now start in auto-commit mode (as per JDBC-4.0 specification
       clarification).
      
-    - Fixed Bug#27412 - cached metadata with PreparedStatement.execute()
+    - Fixed Bug#27412 - cached metadata with Query.execute()
       throws NullPointerException.
       
     - Driver will now fall back to sane defaults for max_allowed_packet and
@@ -2519,7 +2519,7 @@ nn-nn-07 - Version 5.0.9
       "true" when "useCursorFetch" has been set to "true", since the feature
       requires server-side prepared statements in order to function.
 
-	- Fixed BUG#28469 - PreparedStatement.getMetaData() for statements
+	- Fixed BUG#28469 - Query.getMetaData() for statements
 	  containing leading one-line comments is not returned correctly.
 
 	  As part of this fix, we also overhauled detection of DML for
@@ -2607,7 +2607,7 @@ nn-nn-07 - Version 5.0.9
 	  leading to stored procedures not being able to return results. Thanks
 	  to Don Cohen for the bug report, testcase and patch.
 
-	- Fixed BUG#26592 - PreparedStatement is not closed in
+	- Fixed BUG#26592 - Query is not closed in
 	  BlobFromLocator.getBytes().
 
 	- Fixed BUG#25624 - Whitespace surrounding storage/size specifiers in
@@ -2658,7 +2658,7 @@ nn-nn-07 - Version 5.0.9
 	  of the statement.
 
 	  Note that the statement when sent to the server will contain the comments
-	  as-is, they're not stripped during the process of preparing the PreparedStatement
+	  as-is, they're not stripped during the process of preparing the Query
 	  or CallableStatement.
 
 	- Fixed BUG#25328 - BIT(> 1) is returned as java.lang.String from ResultSet.getObject()
@@ -2909,7 +2909,7 @@ nn-nn-07 - Version 5.0.9
 	  (and in the case of SJAS, fail silently when trying to set this parameter).
 
 	- Fixed BUG#25787 - java.util.Date should be serialized for
-	  PreparedStatement.setObject().
+	  Query.setObject().
 
 	  We've added a new configuration option "treatUtilDateAsTimestamp", which is
 	  false by default, as (1) We already had specific behavior to treat
@@ -3056,7 +3056,7 @@ nn-nn-07 - Version 5.0.9
       class name in your application server to utilize XA transactions
       in MySQL-5.0.10 and newer.
 
-    - PreparedStatement.setString() didn't work correctly when
+    - Query.setString() didn't work correctly when
       sql_mode on server contained NO_BACKSLASH_ESCAPES, and no characters
       that needed escaping were present in the string.
 
@@ -3272,7 +3272,7 @@ nn-nn-07 - Version 3.1.15
 
     - Fixed BUG#15544, no "dos" character set in MySQL > 4.1.0
 
-    - Fixed BUG#15383 - PreparedStatement.setObject() serializes
+    - Fixed BUG#15383 - Query.setObject() serializes
       BigInteger as object, rather than sending as numeric value
       (and is thus not complementary to .getObject() on an UNSIGNED
       LONG type).
@@ -3328,7 +3328,7 @@ nn-nn-07 - Version 3.1.15
 
 	- Added performance feature, re-writing of batched executes for
 	  Statement.executeBatch() (for all DML statements) and
-	  PreparedStatement.executeBatch() (for INSERTs with VALUE clauses
+	  Query.executeBatch() (for INSERTs with VALUE clauses
 	  only). Enable by using "rewriteBatchedStatements=true" in your JDBC URL.
 
 	- Fixed BUG#17898 - registerOutParameter not working when some
@@ -3498,7 +3498,7 @@ nn-nn-07 - Version 3.1.15
     - Fixed BUG#10630, Statement.getWarnings() fails with NPE if statement
       has been closed.
 
-    - Only get char[] from SQL in PreparedStatement.ParseInfo() when needed.
+    - Only get char[] from SQL in Query.ParseInfo() when needed.
 
     - Fixed BUG#12104 - Geometry types not handled with server-side prepared
       statements.
@@ -3618,7 +3618,7 @@ nn-nn-07 - Version 3.1.15
 	  in MysqlIO.changeDatabaseTo().
 
 	- Initial implemention of ParameterMetadata for
-	  PreparedStatement.getParameterMetadata(). Only works fully
+	  Query.getParameterMetadata(). Only works fully
 	  for CallableStatements, as current server-side prepared statements
 	  return every parameter as a VARCHAR type.
 
@@ -3640,7 +3640,7 @@ nn-nn-07 - Version 3.1.15
 	  MySQL-4.1.12 or .13, depending on when the character set
 	  gets backported) can reliably support any variant of CP932.
 
-	- Fixed BUG#9064 - com.mysql.jdbc.PreparedStatement.ParseInfo
+	- Fixed BUG#9064 - com.mysql.jdbc.Query.ParseInfo
 	  does unnecessary call to toCharArray().
 
 	- Fixed Bug#10144 - Memory leak in ServerPreparedStatement if
@@ -3762,7 +3762,7 @@ nn-nn-07 - Version 3.1.15
 
 	- Fixed BUG#11360 Connector/J dumping query into SQLException twice
 
-	- Fixed PreparedStatement.setClob() not accepting null as a parameter.
+	- Fixed Query.setClob() not accepting null as a parameter.
 
 	- Fixed BUG#11411 - Production package doesn't include JBoss integration
 	  classes.
@@ -3797,7 +3797,7 @@ nn-nn-07 - Version 3.1.15
 
 	- Fixed regression in ping() for users using autoReconnect=true.
 
-	- Fixed BUG#9040 - PreparedStatement.addBatch() doesn't work with server-side
+	- Fixed BUG#9040 - Query.addBatch() doesn't work with server-side
 	  prepared statements and streaming BINARY data.
 
 	- Fixed BUG#8800 - DBMD.supportsMixedCase*Identifiers() returns wrong
@@ -3824,7 +3824,7 @@ nn-nn-07 - Version 3.1.15
 	  to 'false' (for backwards-compatibility with 3.0, it is now set to 'true'
 	  by default, but will most likely default to 'false' in 3.2).
 
-	- Fixed BUG#9320 - PreparedStatement.getMetaData() inserts blank row in database
+	- Fixed BUG#9320 - Query.getMetaData() inserts blank row in database
 	  under certain conditions when not using server-side prepared statements.
 
 	- Connection.canHandleAsPreparedStatement() now makes 'best effort' to distinguish
@@ -3855,7 +3855,7 @@ nn-nn-07 - Version 3.1.15
     - Fixed BUG#9682 - Stored procedures with DECIMAL parameters with
 	  storage specifications that contained "," in them would fail.
 
-	- PreparedStatement.setObject(int, Object, int type, int scale) now
+	- Query.setObject(int, Object, int type, int scale) now
 	  uses scale value for BigDecimal instances.
 
 	- Fixed BUG#9704 - Statement.getMoreResults() could throw NPE when
@@ -3947,7 +3947,7 @@ nn-nn-07 - Version 3.1.15
     - Always return byte[]s for output parameters registered as *BINARY.
 
     - Send correct value for 'boolean' "true" to server for
-      PreparedStatement.setObject(n, "true", Types.BIT).
+      Query.setObject(n, "true", Types.BIT).
 
     - Fixed bug with Connection not caching statements from
       prepareStatement() when the statement wasn't a server-side
@@ -3955,7 +3955,7 @@ nn-nn-07 - Version 3.1.15
 
     - Choose correct 'direction' to apply time adjustments when both
       client and server are in GMT timezone when using
-      ResultSet.get(..., cal) and PreparedStatement.set(...., cal).
+      ResultSet.get(..., cal) and Query.set(...., cal).
 
     - Added 'dontTrackOpenResources' option (default is false, to be
       JDBC compliant), which helps with memory use for non-well-behaved
@@ -4315,7 +4315,7 @@ nn-nn-07 - Version 3.1.15
 	- Optimized Buffer.readLenByteArray() to return shared empty byte array
 	  when length is 0.
 
-	- Allow contents of PreparedStatement.setBlob() to be retained
+	- Allow contents of Query.setBlob() to be retained
 	  between calls to .execute*().
 
 	- Deal with 0-length tokens in EscapeProcessor (caused by callable
@@ -4456,7 +4456,7 @@ nn-nn-07 - Version 3.1.15
 	- Fixed BUG#6966, connections starting up failed-over (due to down master)
       never retry master.
 
-    - Fixed BUG#7061, PreparedStatement.fixDecimalExponent() adding extra
+    - Fixed BUG#7061, Query.fixDecimalExponent() adding extra
       '+', making number unparseable by MySQL server.
 
     - Fixed BUG#7686, Timestamp key column data needed "_binary'" stripped for
@@ -4467,7 +4467,7 @@ nn-nn-07 - Version 3.1.15
       'false' in this release, so that we don't break legacy applications (it
       defaults to 'true' starting with Connector/J 3.1).
 
-    - Fixed BUG#7601, PreparedStatement.fixDecimalExponent() adding extra
+    - Fixed BUG#7601, Query.fixDecimalExponent() adding extra
       '+', making number unparseable by MySQL server.
 
     - Escape sequence {fn convert(..., type)} now supports ODBC-style types
@@ -4502,7 +4502,7 @@ nn-nn-07 - Version 3.1.15
     - DatabaseMetaData.supportsSelectForUpdate() returns correct value based
       on server version.
 
-    - Use hex escapes for PreparedStatement.setBytes() for double-byte charsets
+    - Use hex escapes for Query.setBytes() for double-byte charsets
       including 'aliases' Windows-31J, CP934, MS932.
 
     - Added support for the "EUC_JP_Solaris" character encoding, which maps
@@ -4591,7 +4591,7 @@ nn-nn-07 - Version 3.1.15
 
 	- Parse new timezone variables from 4.1.x servers.
 
-	- Use _binary introducer for PreparedStatement.setBytes() and
+	- Use _binary introducer for Query.setBytes() and
 	  set*Stream() when connected to MySQL-4.1.x or newer to avoid
 	  misinterpretation during character conversion.
 
@@ -4606,7 +4606,7 @@ nn-nn-07 - Version 3.1.15
 	- Fixed BUG#3920 - "No Database Selected" when using
 	  MysqlConnectionPoolDataSource.
 
-	- Fixed BUG#3873 - PreparedStatement.getGeneratedKeys() method returns only
+	- Fixed BUG#3873 - Query.getGeneratedKeys() method returns only
 	  1 result for batched insertions
 
 05-18-04 - Version 3.0.12-production
@@ -4636,7 +4636,7 @@ nn-nn-07 - Version 3.1.15
       getGeneratedKeys() (BUG#2957)
 
     - Allow java.util.Date to be sent in as parameter to
-      PreparedStatement.setObject(), converting it to a Timestamp
+      Query.setObject(), converting it to a Timestamp
       to maintain full precision (BUG#3103).
 
     - Don't truncate BLOBs/CLOBs when using setBytes() and/or
@@ -4688,7 +4688,7 @@ nn-nn-07 - Version 3.1.15
 
     - Fixed BUG#3520 -- DBMD.getSQLStateType() returns incorrect value.
 
-    - Fixed regression in PreparedStatement.setString() and eastern character
+    - Fixed regression in Query.setString() and eastern character
       encodings.
 
     - Made StringRegressionTest 4.1-unicode aware.
@@ -4722,7 +4722,7 @@ nn-nn-07 - Version 3.1.15
 
 01-13-04 - Version 3.0.10-stable
 
-    - Don't count quoted id's when inside a 'string' in PreparedStatement
+    - Don't count quoted id's when inside a 'string' in Query
       parsing (fix for BUG#1511).
 
     - 'Friendlier' exception message for PacketTooLargeException
@@ -4789,7 +4789,7 @@ nn-nn-07 - Version 3.1.15
       (JDBC-compliance).
 
     - Removed static synchronization bottleneck from
-      PreparedStatement.setTimestamp().
+      Query.setTimestamp().
 
     - Removed static synchronization bottleneck from instance factory
       method of SingleByteCharsetConverter.
@@ -4821,7 +4821,7 @@ nn-nn-07 - Version 3.1.15
 
 10-07-03 - Version 3.0.9-stable
 
-	- Faster date handling code in ResultSet and PreparedStatement (no longer
+	- Faster date handling code in ResultSet and Query (no longer
 	  uses Date methods that synchronize on static calendars).
 
 	- Fixed test for end of buffer in Buffer.readString().
@@ -4830,7 +4830,7 @@ nn-nn-07 - Version 3.1.15
 	  position to before result set when on first row
 	  of result set (bugs.mysql.com BUG#496)
 
-	- Fixed Statement and PreparedStatement issuing bogus queries
+	- Fixed Statement and Query issuing bogus queries
 	  when setMaxRows() had been used and a LIMIT clause was present
 	  in the query.
 
@@ -4959,7 +4959,7 @@ nn-nn-07 - Version 3.1.15
 
     - Fixed MysqlPooledConnection.close() calling wrong event type.
 
-    - Fixed StringIndexOutOfBoundsException in PreparedStatement.
+    - Fixed StringIndexOutOfBoundsException in Query.
       setClob().
 
     - 4.1 Column Metadata fixes
@@ -5030,7 +5030,7 @@ nn-nn-07 - Version 3.1.15
 
     - Implemented Blob.setBytes(). You still need to pass the
       resultant Blob back into an updatable ResultSet or
-      PreparedStatement to persist the changes, as MySQL does
+      Query to persist the changes, as MySQL does
       not support 'locators'.
 
     - Backported 4.1 charset field info changes from Connector/J 3.1
@@ -5066,7 +5066,7 @@ nn-nn-07 - Version 3.1.15
     - Added quoted identifiers to database names for
       Connection.setCatalog.
 
-    - Added support for quoted identifiers in PreparedStatement
+    - Added support for quoted identifiers in Query
       parser.
 
     - Streamlined character conversion and byte[] handling in
@@ -5083,7 +5083,7 @@ nn-nn-07 - Version 3.1.15
 
     - Added support for 4.0.8-style large packets.
 
-    - Fixed PreparedStatement.executeBatch() parameter overwriting.
+    - Fixed Query.executeBatch() parameter overwriting.
 
 12-17-02 - Version 3.0.3-dev
 
@@ -5126,7 +5126,7 @@ nn-nn-07 - Version 3.1.15
       MySQL-4.1 or newer)
 
     - Allow user to alter behavior of Statement/
-      PreparedStatement.executeBatch() via 'continueBatchOnError' property
+      Query.executeBatch() via 'continueBatchOnError' property
       (defaults to 'true').
 
     - Check for connection closed in more Connection methods
@@ -5218,7 +5218,7 @@ nn-nn-07 - Version 3.1.15
 
     - Fixed ResultSet.isLast() for empty result sets (should return false).
 
-    - PreparedStatement now honors stream lengths in setBinary/Ascii/Character
+    - Query now honors stream lengths in setBinary/Ascii/Character
       Stream() unless you set the connection property
       'useStreamLengthsInPrepStmts' to 'false'.
 
@@ -5233,7 +5233,7 @@ nn-nn-07 - Version 3.1.15
 
     - Added limited Clob functionality (ResultSet.getClob(),
       PreparedStatemtent.setClob(),
-      PreparedStatement.setObject(Clob).
+      Query.setObject(Clob).
 
     - Added socketTimeout parameter to URL.
 
@@ -5264,7 +5264,7 @@ nn-nn-07 - Version 3.1.15
       non-GPL licenses, please contact me <mark@mysql.com>
 
     - JDBC-3.0 functionality including
-      Statement/PreparedStatement.getGeneratedKeys() and
+      Statement/Query.getGeneratedKeys() and
       ResultSet.getURL()
 
     - Performance enchancements - driver is now 50-100% faster
@@ -5275,7 +5275,7 @@ nn-nn-07 - Version 3.1.15
       by MySQL-AB)
 
     - Better checking for closed connections in Statement
-      and PreparedStatement.
+      and Query.
 
     - Support for streaming (row-by-row) result sets (see README)
       Thanks to Doron.
@@ -5315,7 +5315,7 @@ nn-nn-07 - Version 3.1.15
 
     - More code cleanup
 
-    - PreparedStatement now releases resources on .close() (SF bug 553268)
+    - Query now releases resources on .close() (SF bug 553268)
 
     - Quoted identifiers not used if server version does not support them. Also,
       if server started with --ansi or --sql-mode=ANSI_QUOTES then '"' will be
@@ -5342,7 +5342,7 @@ nn-nn-07 - Version 3.1.15
 
     - Added setURL() to MySQLXADataSource (SF bug 546019)
 
-    - PreparedStatement.toString() fixed (SF bug 534026)
+    - Query.toString() fixed (SF bug 534026)
 
     - ResultSetMetaData.getColumnClassName() now implemented
 
@@ -5365,12 +5365,12 @@ nn-nn-07 - Version 3.1.15
     - Added new types to getTypeInfo(), fixed existing types thanks to
       Al Davis and Kid Kalanon.
 
-    - Added support for BIT types (51870) to PreparedStatement.
+    - Added support for BIT types (51870) to Query.
 
     - Fixed getRow() bug (527165) in ResultSet
 
-    - Fixes for ResultSet updatability in PreparedStatement.
-    - Fixed timezone off by 1-hour bug in PreparedStatement (538286, 528785).
+    - Fixes for ResultSet updatability in Query.
+    - Fixed timezone off by 1-hour bug in Query (538286, 528785).
 
     - ResultSet: Fixed updatability (values being set to null
       if not updated).
@@ -5438,7 +5438,7 @@ nn-nn-07 - Version 3.1.15
 
      - Report batch update support through DatabaseMetaData (bug 495101).
 
-     - Fixed off-by-one-hour error in PreparedStatement.setTimestamp()
+     - Fixed off-by-one-hour error in Query.setTimestamp()
        (bug 491577).
 
      - Removed concatenation support from driver (the '||' operator),
@@ -5447,7 +5447,7 @@ nn-nn-07 - Version 3.1.15
        need to start mysqld with the "--ansi" flag to use the '||'
        operator as concatenation (bug 491680)
 
-     - Fixed casting bug in PreparedStatement (bug 488663).
+     - Fixed casting bug in Query (bug 488663).
 
 11-25-01 - Version 2.0.8
 
@@ -5456,7 +5456,7 @@ nn-nn-07 - Version 3.1.15
 
      - XADataSource/ConnectionPoolDataSource code (experimental)
 
-     - PreparedStatement.setAnyNumericType() now handles positive
+     - Query.setAnyNumericType() now handles positive
        exponents correctly (adds "+" so MySQL can understand it).
 
      - DatabaseMetaData.getPrimaryKeys() and getBestRowIdentifier()
@@ -5466,7 +5466,7 @@ nn-nn-07 - Version 3.1.15
 
 10-24-01 - Version 2.0.7
 
-     - PreparedStatement.setCharacterStream() now implemented
+     - Query.setCharacterStream() now implemented
 
      - Fixed dangling socket problem when in high availability
        (autoReconnect=true) mode, and finalizer for Connection will
@@ -5490,12 +5490,12 @@ nn-nn-07 - Version 3.1.15
        SQL_DATETIME_SUB and SQL_DATA_TYPE fields not being
        readable.
 
-     - Fixed PreparedStatement generating SQL that would end
+     - Fixed Query generating SQL that would end
        up with syntax errors for some queries.
 
      - Fixed ResultSet.isAfterLast() always returning false.
 
-     - Fixed timezone issue in PreparedStatement.setTimestamp()
+     - Fixed timezone issue in Query.setTimestamp()
        (thanks to Erik Olofsson)
 
      - Captialize type names when "captializeTypeNames=true"
@@ -5505,15 +5505,15 @@ nn-nn-07 - Version 3.1.15
      - Updatable result sets now correctly handle NULL
        values in fields.
 
-     - PreparedStatement.setDouble() now uses full-precision
+     - Query.setDouble() now uses full-precision
        doubles (reverting a fix made earlier to truncate them).
 
-     - PreparedStatement.setBoolean() will use 1/0 for values
+     - Query.setBoolean() will use 1/0 for values
        if your MySQL Version >= 3.21.23.
 
 06-16-01 - Version 2.0.6
 
-Fixed PreparedStatement parameter checking
+Fixed Query parameter checking
 
      - Fixed case-sensitive column names in ResultSet.java
 
@@ -5528,12 +5528,12 @@ Fixed PreparedStatement parameter checking
 
      - Added ISOLATION level support to Connection.setIsolationLevel()
 
-     - Fixed NPE on PreparedStatement.executeUpdate() when all columns
+     - Fixed NPE on Query.executeUpdate() when all columns
        have not been set.
 
      - Fixed data parsing of TIMESTAMPs with 2-digit years
 
-     - Added Byte to PreparedStatement.setObject()
+     - Added Byte to Query.setObject()
 
      - ResultSet.getBoolean() now recognizes '-1' as 'true'
 
@@ -5610,10 +5610,10 @@ Fixed PreparedStatement parameter checking
 
 10-29-99
 
-     - Statement/PreparedStatement.getMoreResults() bug fixed.
+     - Statement/Query.getMoreResults() bug fixed.
        Thanks to Noel J. Bergman.
 
-     - Added Short as a type to PreparedStatement.setObject().
+     - Added Short as a type to Query.setObject().
        Thanks to Jeff Crowder
 
      - Driver now automagically configures maximum/preferred packet
@@ -5743,7 +5743,7 @@ Fixed PreparedStatement parameter checking
        retrieved as Strings.
        (thanks to Chris at Leverage)
 
-     - Fixed setDouble in PreparedStatement for large numbers
+     - Fixed setDouble in Query for large numbers
        to avoid sending scientific notation to the database.
        (thanks to J.S. Ferguson)
 
@@ -5765,7 +5765,7 @@ Fixed PreparedStatement parameter checking
        work bidriectonally now. The useUnicode and encoding
        options are implemented now.
 
-     - Fixes to PreparedStatement to send binary set by
+     - Fixes to Query to send binary set by
        setXXXStream to be sent un-touched to the MySQL server.
 
      - Fixes to getDriverPropertyInfo().
@@ -5778,13 +5778,13 @@ Fixed PreparedStatement parameter checking
        data from the server be a bit quicker, because there is now
        no conversion from StringBuffer to String.
 
-     - Changed PreparedStatement.streamToString() to be more
+     - Changed Query.streamToString() to be more
        efficient (code from Uwe Schaefer).
 
      - URL parsing is more robust (throws SQL exceptions on errors
        rather than NullPointerExceptions)
 
-     - PreparedStatement now can convert Strings to Time/Date values
+     - Query now can convert Strings to Time/Date values
        via setObject() (code from Robert Currey).
 
      - IO no longer hangs in Buffer.readInt(), that bug was
@@ -5807,11 +5807,11 @@ Fixed PreparedStatement parameter checking
 
 9-29-98
 
-     - If object references passed to setXXX() in PreparedStatement are
+     - If object references passed to setXXX() in Query are
        null, setNull() is automatically called for you. (Thanks for the
        suggestion goes to Erik Ostrom)
 
-     - setObject() in PreparedStatement will now attempt to write a
+     - setObject() in Query will now attempt to write a
        serialized  representation of the object to the database for
        objects of Types.OTHER and objects of unknown type.
 
@@ -5857,10 +5857,10 @@ Fixed PreparedStatement parameter checking
      - Fixed Buffer.readLenString() to correctly
           read data for BLOBS.
 
-     - Fixed PreparedStatement.stringToStream to
+     - Fixed Query.stringToStream to
           correctly read data for BLOBS.
 
-     - Fixed PreparedStatement.setDate() to not
+     - Fixed Query.setDate() to not
        add a day.
        (above fixes thanks to Vincent Partington)
 
@@ -5897,8 +5897,8 @@ Fixed PreparedStatement parameter checking
        Connection.rollback() now throws an SQLException
        per the JDBC spec.
 
-     - Added PreparedStatement that supports all JDBC API
-       methods for PreparedStatement including InputStreams.
+     - Added Query that supports all JDBC API
+       methods for Query including InputStreams.
        Please check this out and let me know if anything is
        broken.
 
