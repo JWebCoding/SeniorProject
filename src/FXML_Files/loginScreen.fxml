@@ -2,11 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
+<AnchorPane prefHeight="220.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
     <children>
         <Label fx:id="labelMessage" layoutX="91.0" layoutY="61.0" text="Welcome! Please login" />
         <Label layoutX="75.0" layoutY="24.0" text="Mule Trough Login">
@@ -14,10 +16,16 @@
                 <Font name="System Bold" size="17.0" />
             </font>
         </Label>
-        <Label layoutX="30.0" layoutY="121.0" text="Password:" />
-        <TextField fx:id="textFieldUsername" layoutX="93.0" layoutY="88.0" />
-        <TextField fx:id="textFieldPassword" layoutX="93.0" layoutY="117.0" />
-        <Label layoutX="27.0" layoutY="92.0" text="Username:" />
-        <Button fx:id="buttonLogin" layoutX="129.0" layoutY="153.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login" />
+        <Label layoutX="29.0" layoutY="142.0" text="Password:" />
+        <TextField fx:id="textFieldUsername" layoutX="92.0" layoutY="109.0" />
+        <TextField fx:id="textFieldPassword" layoutX="92.0" layoutY="138.0" />
+        <Label layoutX="26.0" layoutY="113.0" text="Username:" />
+        <Button fx:id="buttonLogin" layoutX="128.0" layoutY="174.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login" />
+      <RadioButton fx:id="radButtonStudent" layoutX="91.0" layoutY="83.0" mnemonicParsing="false" selected="true" text="Student">
+         <toggleGroup>
+            <ToggleGroup fx:id="loginToggleGroup" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="radButtonEmployee" layoutX="167.0" layoutY="83.0" mnemonicParsing="false" text="Employee" toggleGroup="$loginToggleGroup" />
     </children>
 </AnchorPane>

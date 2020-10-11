@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -24,11 +25,13 @@ public class LoginController {
     @FXML public TextField textFieldPassword;
     @FXML public Button buttonLogin;
     @FXML public Label labelMessage;
+    @FXML public RadioButton radButtonStudent;
+    @FXML public RadioButton radButtonEmployee;
 
     public void openLogin() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML_Files/loginScreen.fxml"));
         loginStage.setTitle("Mule Trough Login");
-        loginStage.setScene(new Scene(root, 300, 200));
+        loginStage.setScene(new Scene(root, 300, 220));
         loginStage.show();
     }
 
