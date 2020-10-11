@@ -18,10 +18,12 @@ public class ServerConnection {
         getConnectionSettings(db);
     }
 
+    // Empty constructor
     public ServerConnection() {
 
     }
 
+    // Establish the connection settings
     public Connection getConnectionSettings(int db) throws SQLException {
         Connection connection=null;
         Properties connectionProperties=new Properties();
@@ -46,8 +48,16 @@ public class ServerConnection {
         return connection;
     }
 
-    public void closeConnection(){
-
+    // Close the current connection
+    public void closeConnection(Connection connection) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+            connection = null;
+        } catch (SQLException e) {
+            System.err.print(e);
+        }
     }
 
     public String getUserName() { return userName; }
